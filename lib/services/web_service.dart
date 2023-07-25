@@ -11,7 +11,7 @@ class WebService {
       {String url = ApplicationConstants.API_LISTING}) async {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      return Phones.fromJson(jsonDecode(response.body));
+      return Phones.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     }
     return null;
   }

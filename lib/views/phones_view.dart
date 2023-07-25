@@ -109,7 +109,8 @@ class _PhonesViewState extends State<PhonesView> {
                                   .name ??
                               '',
                           overflow: TextOverflow.clip,
-                          style: const TextStyle(fontSize: 12),
+                          style: TextStyle(
+                              fontSize: 13, color: Colors.blue.shade800),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -120,7 +121,8 @@ class _PhonesViewState extends State<PhonesView> {
                                   .price
                                   .toString() ??
                               '',
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
                       Text(
                           '${result.horizontalProducts[result.horizontalProducts.indexOf(item)].countOfPrices} satıcı' ??
                               '',
@@ -129,7 +131,7 @@ class _PhonesViewState extends State<PhonesView> {
                       Text(
                           '${result.horizontalProducts[result.horizontalProducts.indexOf(item)].followCount}+ takip' ??
                               '',
-                          style: const TextStyle(fontSize: 11)),
+                          style: const TextStyle(fontSize: 12)),
                     ],
                   ),
                 ),
@@ -143,7 +145,7 @@ class _PhonesViewState extends State<PhonesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Products')),
+      appBar: AppBar(title: const Text('Products AA')),
       body: Column(
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -198,7 +200,9 @@ class _PhonesViewState extends State<PhonesView> {
           const SizedBox(height: 10),
           if (!isFirstLoading)
             Expanded(
-              flex: 3,
+              flex: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 3
+                  : 2,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification scrollInfo) {
                   if (!isSecondLoading &&
@@ -209,97 +213,104 @@ class _PhonesViewState extends State<PhonesView> {
                   }
                   return true;
                 },
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 2 / 3,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                    itemCount: result.products.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const PhoneDetailsView()),
-                          );
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(25.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.center,
-                                        height: 35,
-                                        width: 35,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.red,
+                child: Container(
+                  color: Colors.blueGrey.shade50,
+                  child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              childAspectRatio: 2 / 3,
+                              crossAxisSpacing: 20,
+                              mainAxisSpacing: 20),
+                      itemCount: result.products.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PhoneDetailsView()),
+                            );
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(25.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.center,
+                                          height: 35,
+                                          width: 35,
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.red,
+                                          ),
+                                          child: Text(
+                                            result.products[index].dropRatio !=
+                                                    null
+                                                ? '%${result.products[index].dropRatio.toString()}'
+                                                : '%-',
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
                                         ),
-                                        child: Text(
-                                          result.products[index].dropRatio !=
-                                                  null
-                                              ? '%${result.products[index].dropRatio.toString()}'
-                                              : '%-',
-                                          style: const TextStyle(
-                                              color: Colors.white),
+                                        const SizedBox(width: 10.0),
+                                        Expanded(
+                                          child: Image.network(
+                                            result.products[index].imageUrl,
+                                            fit: BoxFit.scaleDown,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      Expanded(
-                                        child: Image.network(
-                                          result.products[index].imageUrl,
-                                          fit: BoxFit.scaleDown,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  result.products[index].name ?? '',
-                                  style: const TextStyle(fontSize: 12),
-                                  softWrap: false,
-                                  overflow: TextOverflow.clip,
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  '${result.products[index].price} TL',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                                const SizedBox(height: 3),
-                                Text(
-                                    result.products[index].countOfPrices != null
-                                        ? '${result.products[index].countOfPrices} satıcı'
-                                        : '0 satıcı',
-                                    style: const TextStyle(fontSize: 11)),
-                                const SizedBox(height: 10),
-                                Text(
-                                    result.products[index].followCount != null
-                                        ? '${result.products[index].followCount}+ takip'
-                                        : '0 takip',
-                                    style: const TextStyle(fontSize: 12)),
-                              ],
+                                  Text(
+                                    result.products[index].name ?? '',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.blue.shade800),
+                                    softWrap: false,
+                                    overflow: TextOverflow.clip,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    '${result.products[index].price} TL',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  const SizedBox(height: 3),
+                                  Text(
+                                      result.products[index].countOfPrices !=
+                                              null
+                                          ? '${result.products[index].countOfPrices} satıcı'
+                                          : '0 satıcı',
+                                      style: const TextStyle(fontSize: 11)),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                      result.products[index].followCount != null
+                                          ? '${result.products[index].followCount}+ takip'
+                                          : '0 takip',
+                                      style: const TextStyle(fontSize: 12)),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                ),
               ),
             ),
           if (isSecondLoading) const Center(child: CircularProgressIndicator()),
